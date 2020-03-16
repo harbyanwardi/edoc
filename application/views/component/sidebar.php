@@ -16,7 +16,7 @@
           <img src="../../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a href="#" class="d-block"><?php echo $this->session->userdata('username') ?></a>
         </div>
       </div>
 
@@ -61,29 +61,29 @@
             <a href="#" class="nav-link active">
               <i class="nav-icon fas fa-table"></i>
               <p>
-                DOKUMEN
+                KAS
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="../tables/simple.html" class="nav-link">
+                <a href="<?php echo base_url('/') ?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Simple Tables</p>
+                  <p>Kas Besar</p>
+                </a>
+              </li>
+             <!--  <li class="nav-item">
+                <a href="<?php echo base_url('/Welcome/kas/2') ?>" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Kas Office</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../tables/data.html" class="nav-link">
+                <a href="<?php echo base_url('/Welcome/kas/3') ?>" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>DataTables</p>
+                  <p>Kas Lapangan</p>
                 </a>
-              </li>
-              <li class="nav-item">
-                <a href="../tables/jsgrid.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>jsGrid</p>
-                </a>
-              </li>
+              </li> -->
             </ul>
           </li>
 
@@ -116,7 +116,18 @@
               </li>
             </ul>
           </li>
-         
+          <br>
+          <li class="nav-item has-treeview">
+            <a href="<?php echo base_url("Login/logout"); ?>" class="nav-link">
+              <i class="nav-icon fas fa-sign-out-alt"></i>
+              <p>
+                SIGN OUT
+                
+              </p>
+            </a>
+           
+          </li>
+          
          
         </ul>
       </nav>

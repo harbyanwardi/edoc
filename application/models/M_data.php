@@ -14,6 +14,17 @@ class M_data extends CI_Model {
 		}
 	}
 
+	public function showKas($id){
+		$this->db->select('
+          a.*,b.id as param_id, b.value as jenis_kas
+      ');
+      $this->db->join('mst_param as b', 'a.kas_type = b.id');
+      $this->db->from('mst_kas as a');
+      $this->db->where('a.kas_type',$id);
+      $query = $this->db->get();
+      return $query->result_array();
+	}
+
 	public function GetData($tableName,$where="")
 	{
 		$data = $this->db->query('select * from '.$tableName.$where);

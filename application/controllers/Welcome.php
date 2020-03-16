@@ -12,29 +12,49 @@ class Welcome extends CI_Controller {
 
 	public function index()
 	{
-    //    $data = $this->M_data->showdata("product");
+        $id = 1; //KAS BESAR
+       $data = $this->M_data->showKas($id);
         
         $show = array(
             'nav'=> $this->header(),
             'navbar'=> $this->navbar(),
             'sidebar' => $this->sidebar(),
 			// 'footer'=> $this->footer(),
-            // 'data' => $data,
+            'data' => $data,
             
         );
         $this->load->view('data',$show);
         // $this->load->view('data');
 	}
     
-    public function add()
-	{
-		$show = array(
-			'nav'=> $this->nav(),
-			'footer'=> $this->footer(),
+ //    public function add()
+	// {
+	// 	$show = array(
+	// 		'nav'=> $this->nav(),
+	// 		'footer'=> $this->footer(),
 			
-		);
-		$this->load->view('product/v_addform',$show);
-	}
+	// 	);
+	// 	$this->load->view('product/v_addform',$show);
+	// }
+
+    public function add(){
+        $this->form_validation->set_rules('amount', 'amount', 'required|integer');
+        date_default_timezone_set('Asia/Jakarta');
+        $date = date('Y-m-d H:i:s');
+        if($this->form_validation->run()==FALSE){
+            
+            $this->flashdata_failed();
+        }else{
+            $data=array(
+                "amount"=> $_POST['amount'],
+                "kas_type"=>$_POST['kas_type'],
+                "created_by" => $this->session->userdata('username'),
+                "created_at" => $date,
+            );
+            $this->db->insert('mst_kas',$data);
+           $this->flashdata_succeed();
+        }
+    }
 
 	public function do_insert()
 	{
@@ -56,9 +76,9 @@ class Welcome extends CI_Controller {
  
     }
 
-    public function do_delete($id){
+    public function delete($id){
 		$where = array('id' => $id);
-		$res = $this->M_data->DeleteData('product',$where);
+		$res = $this->M_data->DeleteData('mst_kas',$where);
 		if($res>=1){
 			$this->flashdata_succeed();
 	   }
@@ -82,17 +102,18 @@ class Welcome extends CI_Controller {
     }
 
     public function do_update(){
-            $id = $this->input->post('id');
+            $id = $this->input->post('kas_id');
         
-        $get = $this->M_data->GetData2("product ","where id = '$id'")->row();
+        $get = $this->M_data->GetData2("mst_kas ","where id = '$id'")->row();
         $where = array('id' => $id);
         $data = array(
-            'product_name' => $this->input->post('product_name'),
-            'qty' =>$this->input->post('qty'),
+            'amount' => $this->input->post('amount'),
+            'kas_type' =>$this->input->post('kas_type'),
+            "created_by" => $this->session->userdata('username'),
             
         );
         
-        $res = $this->M_data->UpdateData('product',$data,$where);
+        $res = $this->M_data->UpdateData('mst_kas',$data,$where);
         if($res>=1){
             $this->flashdata_succeed();
         }
@@ -129,11 +150,11 @@ class Welcome extends CI_Controller {
 
     public function flashdata_succeed(){
         $this->session->set_flashdata("pesan", "<div class=\"col-md-12\"><div class=\"alert alert-success\" id=\"alert\">Action Succeed !!!</div></div>");
-                redirect('Welcome/index');
+                redirect('/');
     }
     public function flashdata_failed(){
         $this->session->set_flashdata("pesan", "<div class=\"col-md-12\"><div class=\"alert alert-danger\" id=\"alert\">Action Failed !!!</div></div>");
-                redirect('C_product/index');
+                redirect('/');
     }
 }
 

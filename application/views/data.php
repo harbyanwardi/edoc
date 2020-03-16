@@ -16,12 +16,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>DataTables</h1>
+            <h1>KAS</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">DataTables</li>
+              <li class="breadcrumb-item"><a href="<?php echo base_url('/') ?>">Home</a></li>
+              <li class="breadcrumb-item active">Kas</li>
             </ol>
           </div>
         </div>
@@ -34,96 +34,144 @@
         <div class="col-12">
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">DataTable with minimal features & hover style</h3>
+              <h3 class="card-title">Master Kas</h3>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
+               <?=$this->session->flashdata('pesan')?>
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-tambah"><i class="fa fa-plus-circle"></i> Tambah </button>
               <table id="example2" class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                  <th>Rendering engine</th>
-                  <th>Browser</th>
-                  <th>Platform(s)</th>
-                  <th>Engine version</th>
-                  <th>CSS grade</th>
+                  <th>No</th>
+                  <th>Jumlah Kas</th>
+                  <th>Kas Type</th>
+                  <th>Data Masuk</th>
+                  <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-            
-                <tr>
-                  <td>Presto</td>
-                  <td>Opera 9.5</td>
-                  <td>Win 88+ / OSX.3+</td>
-                  <td>-</td>
-                  <td>A</td>
-                </tr>
-               
+           <?php
+                                         $nomor = 1;
+                                         foreach($data as $d){  $id=$d['id'];?>
+                                        <tr class="odd gradeX">
+                                            <td><?php echo $nomor; ?></td>
+                                            <td><?php echo $d['amount']; ?></td>
+                                            <td><?php echo $d['jenis_kas']; ?></td>
+                                            <td><?php echo $d['created_at']; ?></td>
+                                           
+                                            <td align="center">
+                                               <a data-toggle="modal" data-target="#modal-edit<?php echo $id;?>" class="btn btn-warning btn-circle" data-popup="tooltip" data-placement="top" title="Edit Data"><i class="fas fa-edit"></i>Edit</a>
+                                      <a href="<?php echo site_url('Welcome/delete/'.$d['id']); ?>" onclick="return confirm('Apakah Anda Ingin Menghapus Data <?=$d['amount'];?> ?');" class="btn btn-danger btn-circle" data-popup="tooltip" data-placement="top" title="Hapus Data"><i class="fa fa-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                        <?php 
+                                            $nomor = $nomor+1; } ?>
                 </tbody>
-                <tfoot>
-                <tr>
-                  <th>Rendering engine</th>
-                  <th>Browser</th>
-                  <th>Platform(s)</th>
-                  <th>Engine version</th>
-                  <th>CSS grade</th>
-                </tr>
-                </tfoot>
+               
               </table>
             </div>
             <!-- /.card-body -->
           </div>
           <!-- /.card -->
-
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">DataTable with default features</h3>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-              <table id="example1" class="table table-bordered table-striped">
-                <thead>
-                <tr>
-                  <th>Rendering engine</th>
-                  <th>Browser</th>
-                  <th>Platform(s)</th>
-                  <th>Engine version</th>
-                  <th>CSS grade</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td>Trident</td>
-                  <td>Internet
-                    Explorer 4.0
-                  </td>
-                  <td>Win 95+</td>
-                  <td> 4</td>
-                  <td>X</td>
-                </tr>
-               
-                <tr>
-                  <td>KHTML</td>
-                  <td>Konqureror 3.5</td>
-                  <td>KDE 3.5</td>
-                  <td>3.5</td>
-                  <td>A</td>
-                </tr>
-                
-              
-                </tbody>
-                <tfoot>
-                <tr>
-                  <th>Rendering engine</th>
-                  <th>Browser</th>
-                  <th>Platform(s)</th>
-                  <th>Engine version</th>
-                  <th>CSS grade</th>
-                </tr>
-                </tfoot>
-              </table>
-            </div>
-            <!-- /.card-body -->
+<div id="modal-tambah" class="modal fade">
+    <div class="modal-dialog">
+      <form action="<?php echo site_url('Welcome/add'); ?>" method="post">
+      <div class="modal-content">
+        <div class="modal-header bg-primary">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Tambah Data</h4>
+        </div>
+        <div class="modal-body">
+          
+          <div class="form-group">
+            <label class='col-md-3'>Jumlas Kas</label>
+            <div class='col-md-9'><input type="text" name="amount" autocomplete="off" required placeholder="Masukkan Jumlas Kas" class="form-control" ></div>
           </div>
+          <div class="form-group">
+                                            <label>Type Kas</label>
+                                            <select class="form-control" name="kas_type">
+                                                <option  value="">Pilih Type</option>                    
+                                                
+                                                <option value="1">Kas Besar</option>
+                                                <option value="2">Kas Office</option>
+                                                <option value="3">Kas Lapangan</option>
+                                               
+                                            </select>    
+                                        </div>
+          <br>
+        </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary"><i class="icon-checkmark-circle2"></i> Simpan</button>
+          </div>
+        </form>
+    </div>
+</div>  
+
+ 
+</div>
+<?php
+        foreach($data as $i):
+            $id=$i['id'];
+            $amount=$i['amount'];
+            $kas_type=$i['kas_type'];
+            $jenis_kas=$i['jenis_kas'];
+            
+        ?>
+        <div class="modal fade" id="modal-edit<?php echo $id;?>" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h3 class="modal-title" id="myModalLabel">Edit Barang</h3>
+            </div>
+            <form class="form-horizontal" method="post" action="<?php echo base_url().'Welcome/do_update'?>">
+                <div class="modal-body">
+ 
+                    <div class="form-group">
+                      
+                        <div class="col-xs-8">
+                            <input name="kas_id" value="<?php echo $id;?>" class="form-control" type="hidden" placeholder="Kode Barang..." readonly>
+                        </div>
+                    </div>
+ 
+                    <div class="form-group">
+                        <label class="control-label col-xs-3" >Jumlah Kas</label>
+                        <div class="col-xs-8">
+                            <input name="amount" value="<?php echo $amount;?>" class="form-control" type="text" placeholder="Jumlah Kas..." required>
+                        </div>
+                    </div>
+ 
+                    <div class="form-group">
+                        <label class="control-label col-xs-3" >Kas Type</label>
+                        <div class="col-xs-8">
+                             <select name="kas_type" class="form-control" required>
+                                <option value="<?php echo $kas_type;?>"><?php echo $jenis_kas;?></option>
+                               
+                                    <option value="1">Kas Besar</option>
+                                    <option value="2">Kas Office</option>
+                                    <option value="3">Kas Lapangan</option>
+                                    
+                             </select>
+                        </div>
+                    </div>
+ 
+ 
+                </div>
+ 
+                <div class="modal-footer">
+                    <button class="btn" data-dismiss="modal" aria-hidden="true">Tutup</button>
+                    <button class="btn btn-info">Update</button>
+                </div>
+            </form>
+            </div>
+            </div>
+        </div>
+ 
+    <?php endforeach;?>
+
+          
           <!-- /.card -->
         </div>
         <!-- /.col -->
