@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Welcome extends CI_Controller {
+class C_project extends CI_Controller {
 
 	function __construct() {
         parent::__construct();
@@ -12,35 +12,21 @@ class Welcome extends CI_Controller {
 
 	public function index()
 	{
-        $id = 1; //KAS BESAR
-        if ($this->input->server('REQUEST_METHOD') == 'POST'){
-            $date = $_POST['created_at'];
-            
-            $data = $this->M_data->showKas($id,$date);
-        }
-       else{
-           
-            $data = $this->M_data->showKas($id,"");
-       }
-      
+        
+       $data = $this->M_data->showdata("mst_project");
+        
         $show = array(
             'nav'=> $this->header(),
             'navbar'=> $this->navbar(),
             'sidebar' => $this->sidebar(),
 			// 'footer'=> $this->footer(),
-             'data' => $data,
+            'data' => $data,
             
         );
-        $this->load->view('data',$show);
+        $this->load->view('project/index',$show);
         // $this->load->view('data');
 	}
     
-    public function getkas()
-    {
-        $id = 1; //KAS BESAR
-        $data=$this->M_data->showKas($id);
-        echo json_encode($data);
-    }
  //    public function add()
 	// {
 	// 	$show = array(
@@ -52,7 +38,7 @@ class Welcome extends CI_Controller {
 	// }
 
     public function add(){
-        $this->form_validation->set_rules('amount', 'amount', 'required|integer');
+        $this->form_validation->set_rules('project_name', 'Project Name', 'required');
         date_default_timezone_set('Asia/Jakarta');
         $date = date('Y-m-d H:i:s');
         if($this->form_validation->run()==FALSE){
@@ -60,12 +46,15 @@ class Welcome extends CI_Controller {
             $this->flashdata_failed();
         }else{
             $data=array(
-                "amount"=> $_POST['amount'],
-                "kas_type"=>$_POST['kas_type'],
+                "project_name"=> $_POST['project_name'],
+                "description"=>$_POST['description'],
+                "pic"=>$_POST['pic'],
+                "estimate_start"=>$_POST['estimate_start'],
+                "estimate_end" => $_POST['estimate_end'],
                 "created_by" => $this->session->userdata('username'),
                 "created_at" => $date,
             );
-            $this->db->insert('mst_kas',$data);
+            $this->db->insert('mst_project',$data);
            $this->flashdata_succeed();
         }
     }
@@ -101,33 +90,25 @@ class Welcome extends CI_Controller {
         }
     }
 
-	public function do_edit($id){
-        $get = $this->M_data->GetData("product ","where id = '$id'");
-        $data = array(
-        	'nav'=> $this->nav(),
-			'footer'=> $this->footer(),
-            'id' => $id,
-            'product_name' => $get[0]['product_name'] ,
-            'qty' => $get[0]['qty'],
-
-        );
-        
-        $this->load->view('product/v_editform',$data);
-    }
+	
 
     public function do_update(){
-            $id = $this->input->post('kas_id');
+            $id = $this->input->post('project_id');
         
-        $get = $this->M_data->GetData2("mst_kas ","where id = '$id'")->row();
+        $get = $this->M_data->GetData2("mst_project ","where id = '$id'")->row();
         $where = array('id' => $id);
         $data = array(
-            'amount' => $this->input->post('amount'),
-            'kas_type' =>$this->input->post('kas_type'),
+            'project_name' => $_POST['project_name'],
+
+            'description' =>$_POST['description'],
+            'pic' =>$_POST['pic'],
+            'estimate_start' =>$_POST['estimate_start'],
+            'estimate_end' =>$_POST['estimate_end'],
             "created_by" => $this->session->userdata('username'),
             
         );
         
-        $res = $this->M_data->UpdateData('mst_kas',$data,$where);
+        $res = $this->M_data->UpdateData('mst_project',$data,$where);
         if($res>=1){
             $this->flashdata_succeed();
         }
@@ -164,11 +145,11 @@ class Welcome extends CI_Controller {
 
     public function flashdata_succeed(){
         $this->session->set_flashdata("pesan", "<div class=\"col-md-12\"><div class=\"alert alert-success\" id=\"alert\">Action Succeed !!!</div></div>");
-                redirect('/');
+                redirect('/C_project');
     }
     public function flashdata_failed(){
         $this->session->set_flashdata("pesan", "<div class=\"col-md-12\"><div class=\"alert alert-danger\" id=\"alert\">Action Failed !!!</div></div>");
-                redirect('/');
+                redirect('/C_project');
     }
 }
 

@@ -16,12 +16,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>KAS</h1>
+            <h1><b>LIST</b>PROJECT</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="<?php echo base_url('/') ?>">Home</a></li>
-              <li class="breadcrumb-item active">Kas</li>
+              <li class="breadcrumb-item active">List Project</li>
             </ol>
           </div>
         </div>
@@ -38,51 +38,41 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <div class="col-lg-6 col-md-12 ">
-                                <form action="<?php echo base_url('Welcome') ?>" method="POST" class="form-inline">
-                                   
-                                    <div class="form-group">
-                                       <input name="created_at" type="date" class="form-control" />
-                                        
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Search</button>
-                                </form>
-                                <br>
-                            </div> 
                <?=$this->session->flashdata('pesan')?>
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-tambah"><i class="fa fa-plus-circle"></i> Tambah </button><br>
-              <br><table id="example1" class="table table-bordered table-hover">
+              <br><table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>No</th>
-                  <th>Jumlah Kas</th>
-                  <th>Kas Type</th>
-                  <th>Data Masuk</th>
+                  <th>Project</th>
+                  <th>Description</th>
+                  <th>PIC</th>
+                  <th>Estimate Start</th>
+                  <th>Estimate End</th>
                   <th>Action</th>
                 </tr>
                 </thead>
-                 <tbody>
+                <tbody>
            <?php
                                          $nomor = 1;
                                          foreach($data as $d){  $id=$d['id'];?>
                                         <tr class="odd gradeX">
                                             <td><?php echo $nomor; ?></td>
-                                            <td><?php echo $d['amount']; ?></td>
-                                            <td><?php echo $d['jenis_kas']; ?></td>
-                                            <td><?php echo $d['created_at']; ?></td>
+                                            <td><?php echo $d['project_name']; ?></td>
+                                            <td><?php echo $d['description']; ?></td>
+                                            <td><?php echo $d['pic']; ?></td>
+                                            <td><?php echo $d['estimate_start']; ?></td>
+                                            <td><?php echo $d['estimate_end']; ?></td>
                                            
                                             <td align="center">
                                                <a data-toggle="modal" data-target="#modal-edit<?php echo $id;?>" class="btn btn-warning btn-circle" data-popup="tooltip" data-placement="top" title="Edit Data"><i class="fas fa-edit"></i></a>
-                                      <a href="<?php echo site_url('Welcome/delete/'.$d['id']); ?>" onclick="return confirm('Apakah Anda Ingin Menghapus Data <?=$d['amount'];?> ?');" class="btn btn-danger btn-circle" data-popup="tooltip" data-placement="top" title="Hapus Data"><i class="fa fa-trash"></i></a>
+                                      <a href="<?php echo site_url('C_project/delete/'.$d['id']); ?>" onclick="return confirm('Apakah Anda Ingin Menghapus Data <?=$d['project_name'];?> ?');" class="btn btn-danger btn-circle" data-popup="tooltip" data-placement="top" title="Hapus Data"><i class="fa fa-trash"></i></a>
                                             </td>
                                         </tr>
                                         <?php 
                                             $nomor = $nomor+1; } ?>
                 </tbody>
                
-                <tbody id="show_data">
-                 
-                </tbody>
               </table>
             </div>
             <!-- /.card-body -->
@@ -90,29 +80,34 @@
           <!-- /.card -->
 <div id="modal-tambah" class="modal fade">
     <div class="modal-dialog">
-      <form action="<?php echo site_url('Welcome/add'); ?>" method="post">
+      <form action="<?php echo site_url('C_project/add'); ?>" method="post">
       <div class="modal-content">
         <div class="modal-header bg-primary">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Tambah Data</h4>
         </div>
         <div class="modal-body">
-          
+        
           <div class="form-group">
-            <label class='col-md-3'>Jumlas Kas</label>
-            <div class='col-md-9'><input type="text" name="amount" autocomplete="off" required placeholder="Masukkan Jumlas Kas" class="form-control" ></div>
+            <label class='col-xs-3'>Nama Project</label>
+            <div class='col-xs-8'><input type="text" name="project_name" autocomplete="off" required placeholder="Masukkan Nama Project" class="form-control" ></div>
+          </div>
+         <div class="form-group">
+            <label class='col-xs-3'>Description</label>
+            <div class='col-xs-8'><textarea class="form-control" rows="3" name="description"></textarea></div>
           </div>
           <div class="form-group">
-                                            <label>Type Kas</label>
-                                            <select class="form-control" name="kas_type">
-                                                <option  value="">Pilih Type</option>                    
-                                                
-                                                <option value="1">Kas Besar</option>
-                                                <option value="2">Kas Office</option>
-                                                <option value="3">Kas Lapangan</option>
-                                               
-                                            </select>    
-                                        </div>
+            <label class='col-xs-3'>PIC</label>
+            <div class='col-xs-8'><input type="text" name="pic" autocomplete="off" required placeholder="Masukkan PIC project" class="form-control" ></div>
+          </div>
+          <div class="form-group">
+            <label class='col-xs-3'>Estimasi Mulai Project</label>
+            <div class='col-xs-8'><input type="date" name="estimate_start" autocomplete="off" required class="form-control" ></div>
+          </div>
+          <div class="form-group">
+            <label class='col-xs-3'>Estimasi Akhir Project</label>
+            <div class='col-xs-8'><input type="date" name="estimate_end" autocomplete="off" required class="form-control" ></div>
+          </div>
           <br>
         </div>
           <div class="modal-footer">
@@ -128,10 +123,11 @@
 <?php
         foreach($data as $i):
             $id=$i['id'];
-            $amount=$i['amount'];
-            $kas_type=$i['kas_type'];
-            $jenis_kas=$i['jenis_kas'];
-            
+            $project_name=$i['project_name'];
+            $description=$i['description'];
+            $pic=$i['pic'];
+            $estimate_start=$i['estimate_start'];
+            $estimate_end=$i['estimate_end'];
         ?>
         <div class="modal fade" id="modal-edit<?php echo $id;?>" tabindex="-1" role="dialog" aria-labelledby="largeModal" aria-hidden="true">
             <div class="modal-dialog">
@@ -140,34 +136,44 @@
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
                 <h3 class="modal-title" id="myModalLabel">Edit Barang</h3>
             </div>
-            <form class="form-horizontal" method="post" action="<?php echo base_url().'Welcome/do_update'?>">
+            <form class="form-horizontal" method="post" action="<?php echo base_url().'C_project/do_update'?>">
                 <div class="modal-body">
  
                     <div class="form-group">
                       
                         <div class="col-xs-8">
-                            <input name="kas_id" value="<?php echo $id;?>" class="form-control" type="hidden" placeholder="Kode Barang..." readonly>
+                            <input name="project_id" value="<?php echo $id;?>" class="form-control" type="hidden" placeholder="Kode Barang..." readonly>
                         </div>
                     </div>
  
                     <div class="form-group">
-                        <label class="control-label col-xs-3" >Jumlah Kas</label>
+                        <label class="control-label col-xs-3" >Nama Project</label>
                         <div class="col-xs-8">
-                            <input name="amount" value="<?php echo $amount;?>" class="form-control" type="text" placeholder="Jumlah Kas..." required>
+                            <input name="project_name" value="<?php echo $project_name;?>" class="form-control" type="text"  required>
                         </div>
                     </div>
- 
                     <div class="form-group">
-                        <label class="control-label col-xs-3" >Kas Type</label>
+                        <label class="control-label col-xs-3" >Description</label>
                         <div class="col-xs-8">
-                             <select name="kas_type" class="form-control" required>
-                                <option value="<?php echo $kas_type;?>"><?php echo $jenis_kas;?></option>
-                               
-                                    <option value="1">Kas Besar</option>
-                                    <option value="2">Kas Office</option>
-                                    <option value="3">Kas Lapangan</option>
-                                    
-                             </select>
+                            <textarea class="form-control" rows="3" name="description"><?php echo $description;?></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-xs-3" >PIC</label>
+                        <div class="col-xs-8">
+                            <input name="pic" value="<?php echo $pic;?>" class="form-control" type="text" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-xs-3" >Estimasi Awal Project</label>
+                        <div class="col-xs-8">
+                            <input name="estimate_start" value="<?php echo $estimate_start;?>" class="form-control" type="date" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-xs-3" >Estimasi Akhir Project</label>
+                        <div class="col-xs-8">
+                            <input name="estimate_end" value="<?php echo $estimate_end;?>" class="form-control" type="date" required>
                         </div>
                     </div>
  
@@ -226,7 +232,6 @@
 <!-- page script -->
 <script>
   $(function () {
-   
     $("#example1").DataTable();
     $('#example2').DataTable({
       "paging": true,
@@ -236,8 +241,6 @@
       "info": true,
       "autoWidth": false,
     });
-
-  
   });
 </script>
 </body>

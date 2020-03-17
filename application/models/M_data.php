@@ -14,13 +14,17 @@ class M_data extends CI_Model {
 		}
 	}
 
-	public function showKas($id){
+	public function showKas($id,$date){
 		$this->db->select('
           a.*,b.id as param_id, b.value as jenis_kas
       ');
       $this->db->join('mst_param as b', 'a.kas_type = b.id');
       $this->db->from('mst_kas as a');
-      $this->db->where('a.kas_type',$id);
+      $this->db->where('b.id',$id);
+      if($date!=null){
+      	$this->db->where('DATE(a.created_at)',$date);
+      }
+      
       $query = $this->db->get();
       return $query->result_array();
 	}
