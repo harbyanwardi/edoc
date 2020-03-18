@@ -49,7 +49,7 @@
                   <th>PIC</th>
                   <th>Estimate Start</th>
                   <th>Estimate End</th>
-                  <th>Action</th>
+                  <th width="100px">Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -65,6 +65,8 @@
                                             <td><?php echo $d['estimate_end']; ?></td>
                                            
                                             <td align="center">
+                                              <button id="btn-edit" type="button" class="btn btn-outline btn-circle btn-sm purple" ><i class="fa fa-plus-circle"></i> RAP </button>
+                                            
                                                <a data-toggle="modal" data-target="#modal-edit<?php echo $id;?>" class="btn btn-warning btn-circle" data-popup="tooltip" data-placement="top" title="Edit Data"><i class="fas fa-edit"></i></a>
                                       <a href="<?php echo site_url('C_project/delete/'.$d['id']); ?>" onclick="return confirm('Apakah Anda Ingin Menghapus Data <?=$d['project_name'];?> ?');" class="btn btn-danger btn-circle" data-popup="tooltip" data-placement="top" title="Hapus Data"><i class="fa fa-trash"></i></a>
                                             </td>
@@ -118,6 +120,37 @@
     </div>
 </div>  
 
+<!-- CONTOH MODAL EDIT AJAX -->
+
+<div id="modal" class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <button type="button" class="close" data-dismiss="modal">x</button>
+                <div class="modal-title"><h5>Edit profile</h5></div>
+            </div>
+            <div class="modal-body">
+                <form id="mb">
+                    <input type="hidden" name="id" value="">
+                    
+                    <div class="form-group">
+                        <label>Nama lengkap</label>
+                        <input type="text" name="nama" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label>Alamat</label>
+                        <textarea class="form-control" name="alamat"></textarea>
+                    </div>
+                    <div class="form-group clearfix">
+                        <button type="button" data-dismiss="modal">Batal</button>
+                        <button type="button" id='btn' class="btn btn-success pull-right">Simapan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>  
+<!-- END MODAL AJAX -->
  
 </div>
 <?php
@@ -241,7 +274,29 @@
       "info": true,
       "autoWidth": false,
     });
+
   });
+</script>
+<script>
+    $(function () {
+    $('#btn-edit').click(function (e) {
+            e.preventDefault();
+            $('#modal').modal({
+                backdrop: 'static',
+                show: true
+            });
+            id = $(this).data('id');
+            // mengambil nilai data-id yang di click
+            $.ajax({
+                url: 'profile/edit/' + id,
+                success: function (data) {
+                    $("input[name='id']").val(data.id);
+                    $("input[name='nama']").val(data.nama);
+                    $("textarea[name='alamat']").val(data.alamat);
+                }
+            });
+       });
+}
 </script>
 </body>
 </html>

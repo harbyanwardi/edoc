@@ -13,6 +13,7 @@ class Welcome extends CI_Controller {
 	public function index()
 	{
         $id = 1; //KAS BESAR
+        echo $this->session->userdata('username');
         if ($this->input->server('REQUEST_METHOD') == 'POST'){
             $date = $_POST['created_at'];
             

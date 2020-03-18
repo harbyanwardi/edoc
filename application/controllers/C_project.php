@@ -26,6 +26,19 @@ class C_project extends CI_Controller {
         $this->load->view('project/index',$show);
         // $this->load->view('data');
 	}
+
+    public function rap() {
+        $id = $this->uri->segment(3);
+        $get = $this->M_data->GetData2("mst_project ","where id = '$id'")->row();
+
+        $kirim['id'] = $get->id;
+        $kirim['nama'] = $get->project_name;
+        $kirim['alamat'] = $get->description;
+
+        $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode($kirim));
+    }
     
  //    public function add()
 	// {

@@ -5,12 +5,14 @@ class Login extends CI_Controller
 {
 	function __construct() {
         parent::__construct();
-        if ($this->session->userdata('role')=="2") {
-            redirect('Welcome'); }
+        if ($this->session->userdata('role')==2) {
+            redirect('Welcome'); 
+        }
 
     }
 	
 	public function index(){
+
 		$this->load->helper('html');
 		$show = array(
 			'header'=> $this->header(),
@@ -34,8 +36,11 @@ class Login extends CI_Controller
 				$sess_data['role'] = $sess->role;
 				$this->session->set_userdata($sess_data);
 			}
-			if ($this->session->userdata('role')=='2' || $this->session->userdata('role')=='1' ) {
+			if ($this->session->userdata('role')== 1 ) { //Owner / SA
 				redirect('Welcome');
+			}
+			else if ($this->session->userdata('role')== 3 ) { //PM
+				redirect('C_project');
 			}
 				
 		}
